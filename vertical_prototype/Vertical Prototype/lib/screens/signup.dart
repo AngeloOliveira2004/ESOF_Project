@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/screens/loginPage.dart';
 import 'package:first_app/screens/nextsignuppage.dart';
-import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -10,28 +11,34 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     String email = '';
     String password = '';
-    void _registeredUser() async{
-      try{
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email, 
+
+    // Criando uma instância do Logger
+    Logger logger = Logger();
+
+    void registeredUser() async {
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
           password: password,
         );
-        print('Usuário criado com sucesso: ${userCredential.user!.email}');
+        logger.i('Usuário criado com sucesso: ${userCredential.user!.email}');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const LoginDemo()),
         );
       } catch (e) {
-      if (e is FirebaseAuthException) {
-        if (e.code == 'weak-password') {
-          print('A senha é muito fraca.');
-        } else if (e.code == 'email-already-in-use') {
-          print('O email já está em uso.');
+        if (e is FirebaseAuthException) {
+          if (e.code == 'weak-password') {
+            logger.w('A senha é muito fraca.');
+          } else if (e.code == 'email-already-in-use') {
+            logger.w('O email já está em uso.');
+          }
         }
+        logger.e('Erro ao criar usuário: $e');
       }
-      print('Erro ao criar usuário: $e');
     }
-  }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -82,7 +89,7 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 20.0),
-                  Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox()),
                 ],
               ),
             ),
@@ -141,7 +148,12 @@ class SignUp extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => NextSignupPage(registeredUser: _registeredUser)),
+                    MaterialPageRoute(
+                      builder: (_) => NextSignupPage(
+                        registeredUser: registeredUser,
+                        logger: logger, // Passando o Logger para NextSignupPage
+                      ),
+                    ),
                   );
                 },
                 child: const Text(

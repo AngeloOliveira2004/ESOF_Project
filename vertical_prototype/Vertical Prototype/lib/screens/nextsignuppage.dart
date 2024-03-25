@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class NextSignupPage extends StatefulWidget {
   final void Function() registeredUser;
+  final Logger logger;
 
-  const NextSignupPage({super.key, required this.registeredUser});
+  const NextSignupPage({super.key, required this.registeredUser, required this.logger});
 
   @override
   State<NextSignupPage> createState() => NextSignupPageState();
@@ -11,7 +13,6 @@ class NextSignupPage extends StatefulWidget {
 
 class NextSignupPageState extends State<NextSignupPage> {
   bool _isChecked = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +47,11 @@ class NextSignupPageState extends State<NextSignupPage> {
             ElevatedButton(
               onPressed: () {
                 if (_isChecked) {
-                  widget.registeredUser(); // Chamando registeredUser sem referenciar widget
+                  widget
+                      .registeredUser(); // Chamando registeredUser sem referenciar widget
                   Navigator.pop(context);
                 } else {
-                  print('Por favor, aceite os termos para continuar.');
+                  widget.logger.i('Por favor, aceite os termos para continuar.');
                 }
               },
               child: const Text(
@@ -63,5 +65,3 @@ class NextSignupPageState extends State<NextSignupPage> {
     );
   }
 }
-
-
