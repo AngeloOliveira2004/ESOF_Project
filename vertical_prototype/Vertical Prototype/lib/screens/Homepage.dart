@@ -1,20 +1,24 @@
 import 'package:first_app/screens/Maps.dart';
 import 'package:first_app/screens/Profilepage.dart';
+import 'package:first_app/screens/loginPage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  
+  final bool isLoggedIN;
+  const HomePage({super.key, required this.isLoggedIN});
 
   @override
   Widget build(BuildContext context) {
     const items = 4;
+  
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home page'),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {},
           ),
         ],
@@ -69,8 +73,17 @@ class HomePage extends StatelessWidget {
                 backgroundColor: Colors.transparent, // Tornar o avatar clicável
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const profilepage()));
+                    if (isLoggedIN) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const profilepage()),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoginDemo()),
+                      );
+                    }
                   },
                   child: const Icon(Icons.person),
                 ),

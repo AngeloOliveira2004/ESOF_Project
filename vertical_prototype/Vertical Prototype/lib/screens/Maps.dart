@@ -3,6 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart'; // Importe o paco
 
 
 class MapsScreen extends StatefulWidget{
+  const MapsScreen({super.key});
+
   
   
   @override

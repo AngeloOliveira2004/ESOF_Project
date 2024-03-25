@@ -1,13 +1,37 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/screens/loginPage.dart';
 import 'package:first_app/screens/nextsignuppage.dart';
 import 'package:flutter/material.dart';
-
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String email = '';
+    String password = '';
+    void _registeredUser() async{
+      try{
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email, 
+          password: password,
+        );
+        print('Usuário criado com sucesso: ${userCredential.user!.email}');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginDemo()),
+        );
+      } catch (e) {
+      if (e is FirebaseAuthException) {
+        if (e.code == 'weak-password') {
+          print('A senha é muito fraca.');
+        } else if (e.code == 'email-already-in-use') {
+          print('O email já está em uso.');
+        }
+      }
+      print('Erro ao criar usuário: $e');
+    }
+  }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -117,7 +141,7 @@ class SignUp extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => NextSignupPage()),
+                    MaterialPageRoute(builder: (_) => NextSignupPage(registeredUser: _registeredUser)),
                   );
                 },
                 child: const Text(

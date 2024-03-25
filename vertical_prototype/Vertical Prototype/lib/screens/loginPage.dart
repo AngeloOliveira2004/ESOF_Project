@@ -8,10 +8,13 @@ class LoginDemo extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _LoginDemoSate createState() => _LoginDemoSate();
+  _LoginDemoState createState() => _LoginDemoState();
 }
 
-class _LoginDemoSate extends State<LoginDemo> {
+class _LoginDemoState extends State<LoginDemo> {
+  String email = '';
+  String password = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,26 +67,36 @@ class _LoginDemoSate extends State<LoginDemo> {
                     ),
                   ),
                   const SizedBox(width: 20.0),
-                  Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox()),
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, bottom: 20.0, top: 20.0),
               child: TextField(
-                decoration: InputDecoration(
+                onChanged: (value) {
+                  setState(() {
+                    email = value;
+                  });
+                },
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
                   hintText: 'Enter valid email',
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    password = value;
+                  });
+                },
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                   hintText: 'put you password',
@@ -94,9 +107,11 @@ class _LoginDemoSate extends State<LoginDemo> {
               width: 360,
               child: ElevatedButton(
                 onPressed: () {
+                  // Aqui você pode adicionar sua lógica de autenticação
+                  bool isUserLoggedIn = true; // Suponha que o usuário está logado com sucesso
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const HomePage()),
+                    MaterialPageRoute(builder: (_) => HomePage(isLoggedIN: isUserLoggedIn)),
                   );
                 },
                 child: const Text(

@@ -1,8 +1,9 @@
-import 'package:first_app/screens/Homepage.dart';
 import 'package:flutter/material.dart';
 
 class NextSignupPage extends StatefulWidget {
-  const NextSignupPage({Key? key}) : super(key: key);
+  final void Function() registeredUser;
+
+  const NextSignupPage({super.key, required this.registeredUser});
 
   @override
   State<NextSignupPage> createState() => NextSignupPageState();
@@ -44,10 +45,12 @@ class NextSignupPageState extends State<NextSignupPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const HomePage()),
-                );
+                if (_isChecked) {
+                  widget.registeredUser(); // Chamando registeredUser sem referenciar widget
+                  Navigator.pop(context);
+                } else {
+                  print('Por favor, aceite os termos para continuar.');
+                }
               },
               child: const Text(
                 'Signup',
@@ -60,4 +63,5 @@ class NextSignupPageState extends State<NextSignupPage> {
     );
   }
 }
+
 
