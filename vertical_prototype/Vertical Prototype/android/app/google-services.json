@@ -1,22 +1,21 @@
 {
   "project_info": {
-    "project_number": "27886231417",
-    "firebase_url": "https://stately-atrium-418223-default-rtdb.europe-west1.firebasedatabase.app",
-    "project_id": "stately-atrium-418223",
-    "storage_bucket": "stately-atrium-418223.appspot.com"
+    "project_number": "13419220168",
+    "project_id": "first-a67d7",
+    "storage_bucket": "first-a67d7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:27886231417:android:c29124d38545ed05ac99a8",
+        "mobilesdk_app_id": "1:13419220168:android:f5eef4777d990e0a3e29fd",
         "android_client_info": {
-          "package_name": "com.example.first_app"
+          "package_name": "com.company.first_app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAQgIN5dO0x9e6EhvfAeDoxVyAgIM2SnFc"
+          "current_key": "AIzaSyAKSZ98JQXSDah6DdgMfKda10wlzm9yAEA"
         }
       ],
       "services": {

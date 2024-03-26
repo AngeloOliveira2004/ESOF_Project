@@ -19,12 +19,10 @@ void main() async {
       debug: true);
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "sua-api-key",
-      authDomain: "seu-auth-domain",
-      projectId: "seu-project-id",
-      storageBucket: "seu-storage-bucket",
-      messagingSenderId: "seu-messaging-sender-id",
-      appId: "seu-app-id",
+      apiKey: "AIzaSyAKSZ98JQXSDah6DdgMfKda10wlzm9yAEA",
+      projectId: "first-a67d7",
+      messagingSenderId: "13419220168",
+      appId: "1:13419220168:android:f5eef4777d990e0a3e29fd",
     ),
   );
   runApp(const MyApp());

@@ -10,17 +10,15 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String name = ''; 
+    String name = '';
     String surname = '';
     String email = '';
     String password = '';
 
-    
     Logger logger = Logger();
 
     void registeredUser() async {
       try {
-        
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
@@ -28,7 +26,8 @@ class SignUp extends StatelessWidget {
         );
 
         // Salve os dados do usuário no Realtime Database
-        DatabaseReference userRef = FirebaseDatabase.instance.reference().child('users');
+        DatabaseReference userRef =
+            FirebaseDatabase.instance.reference().child('users');
         userRef.child(userCredential.user!.uid).set({
           'name': name,
           'surname': surname,
@@ -125,8 +124,8 @@ class SignUp extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, bottom: 20.0),
+              padding:
+                  const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20.0),
               child: TextField(
                 onChanged: (value) {
                   surname = value;
@@ -138,8 +137,8 @@ class SignUp extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, bottom: 20.0),
+              padding:
+                  const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20.0),
               child: TextField(
                 onChanged: (value) {
                   email = value;
@@ -151,8 +150,8 @@ class SignUp extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, bottom: 20.0),
+              padding:
+                  const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20.0),
               child: TextField(
                 onChanged: (value) {
                   password = value;
