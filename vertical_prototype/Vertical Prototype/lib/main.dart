@@ -1,13 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:first_app/screens/loginPage.dart';
+import 'package:first_app/screens/login_page.dart';
 import 'package:flutter/material.dart';
-
-// ignore: unnecessary_import
-import 'package:flutter/widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "sua-api-key",
+      authDomain: "seu-auth-domain",
+      projectId: "seu-project-id",
+      storageBucket: "seu-storage-bucket",
+      messagingSenderId: "seu-messaging-sender-id",
+      appId: "seu-app-id",
+    ),
+  );
   runApp(const MyApp());
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_app/screens/loginPage.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:first_app/screens/login_page.dart';
 import 'package:first_app/screens/nextsignuppage.dart';
 import 'package:logger/logger.dart';
 
@@ -9,23 +10,43 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String name = ''; 
+    String surname = '';
     String email = '';
     String password = '';
 
-    // Criando uma instância do Logger
+    
     Logger logger = Logger();
 
     void registeredUser() async {
       try {
+        
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+
+        // Salve os dados do usuário no Realtime Database
+        DatabaseReference userRef = FirebaseDatabase.instance.reference().child('users');
+        userRef.child(userCredential.user!.uid).set({
+          'name': name,
+          'surname': surname,
+          'email': email,
+        });
+
         logger.i('Usuário criado com sucesso: ${userCredential.user!.email}');
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const LoginDemo()),
+          MaterialPageRoute(
+            builder: (_) => NextSignupPage(
+              name: name,
+              surname: surname,
+              email: email,
+              registeredUser: registeredUser,
+              logger: logger,
+            ),
+          ),
         );
       } catch (e) {
         if (e is FirebaseAuthException) {
@@ -75,10 +96,7 @@ class SignUp extends StatelessWidget {
                   const SizedBox(width: 20.0),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const SignUp()),
-                      );
+                      registeredUser();
                     },
                     child: const Text(
                       'Sign up',
@@ -93,69 +111,63 @@ class SignUp extends StatelessWidget {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, bottom: 20.0, top: 20.0),
               child: TextField(
-                decoration: InputDecoration(
+                onChanged: (value) {
+                  name = value;
+                },
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Name',
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, bottom: 20.0),
               child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
+                onChanged: (value) {
+                  surname = value;
+                },
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Surname',
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20.0),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, bottom: 20.0),
               child: TextField(
-                decoration: InputDecoration(
+                onChanged: (value) {
+                  email = value;
+                },
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, bottom: 20.0),
               child: TextField(
+                onChanged: (value) {
+                  password = value;
+                },
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 20),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Confirm Password',
                 ),
               ),
             ),
             SizedBox(
               width: 360,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => NextSignupPage(
-                        registeredUser: registeredUser,
-                        logger: logger, // Passando o Logger para NextSignupPage
-                      ),
-                    ),
-                  );
-                },
+                onPressed: registeredUser,
                 child: const Text(
                   'Next',
                   style: TextStyle(color: Colors.blue, fontSize: 15.0),

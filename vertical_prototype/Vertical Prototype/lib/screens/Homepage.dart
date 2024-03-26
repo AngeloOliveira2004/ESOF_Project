@@ -1,6 +1,6 @@
 import 'package:first_app/screens/Maps.dart';
 import 'package:first_app/screens/Profilepage.dart';
-import 'package:first_app/screens/loginPage.dart';
+import 'package:first_app/screens/login_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {

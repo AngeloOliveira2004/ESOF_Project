@@ -1,18 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:first_app/screens/Homepage.dart';
+import 'package:logger/src/logger.dart';
 
 class NextSignupPage extends StatefulWidget {
-  final void Function() registeredUser;
-  final Logger logger;
+  final String name;
+  final String surname;
+  final String email;
 
-  const NextSignupPage({super.key, required this.registeredUser, required this.logger});
+  const NextSignupPage({
+    super.key,
+    required this.name,
+    required this.surname,
+    required this.email, required void Function() registeredUser, required Logger logger,
+  });
 
   @override
-  State<NextSignupPage> createState() => NextSignupPageState();
+  State<NextSignupPage> createState() => _NextSignupPageState();
 }
 
-class NextSignupPageState extends State<NextSignupPage> {
+class _NextSignupPageState extends State<NextSignupPage> {
   bool _isChecked = false;
+
+  void _saveUserData() {
+    if (_isChecked) {
+      // Salve os dados do usuário no banco de dados
+      DatabaseReference userRef = FirebaseDatabase.instance.reference().child('users');
+      userRef.child(widget.email).set({
+        'name': widget.name,
+        'surname': widget.surname,
+        'email': widget.email,
+      });
+
+      // Após salvar os dados, navegue para a próxima página
+      bool isUserLoggedIn = true;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => HomePage(isLoggedIN: isUserLoggedIn),
+        ),
+      );
+    } else {
+      // Se os termos não forem aceitos, exiba uma mensagem ou tome outra ação
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor, aceite os termos para continuar.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +67,7 @@ class NextSignupPageState extends State<NextSignupPage> {
                   value: _isChecked,
                   onChanged: (value) {
                     setState(() {
-                      _isChecked = value!;
+                      _isChecked = value ?? false;
                     });
                   },
                 ),
@@ -45,15 +82,7 @@ class NextSignupPageState extends State<NextSignupPage> {
               ],
             ),
             ElevatedButton(
-              onPressed: () {
-                if (_isChecked) {
-                  widget
-                      .registeredUser(); // Chamando registeredUser sem referenciar widget
-                  Navigator.pop(context);
-                } else {
-                  widget.logger.i('Por favor, aceite os termos para continuar.');
-                }
-              },
+              onPressed: _saveUserData,
               child: const Text(
                 'Signup',
                 style: TextStyle(color: Colors.blue),
