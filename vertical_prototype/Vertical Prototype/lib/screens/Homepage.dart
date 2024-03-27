@@ -1,4 +1,4 @@
-import 'package:first_app/screens/Maps.dart';
+import 'package:first_app/screens/maps.dart';
 import 'package:first_app/screens/Profilepage.dart';
 import 'package:first_app/screens/login_page.dart';
 import 'package:flutter/material.dart';
