@@ -2,26 +2,18 @@ import 'package:first_app/screens/maps.dart';
 import 'package:first_app/screens/Profilepage.dart';
 import 'package:first_app/screens/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:first_app/screens/SearchBar.dart';
 
 class HomePage extends StatelessWidget {
-  
   final bool isLoggedIN;
   const HomePage({super.key, required this.isLoggedIN});
 
   @override
   Widget build(BuildContext context) {
     const items = 4;
-  
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home page'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {},
-          ),
-        ],
+        //actions: const [_SearchBar(Icon(icon.search))],
       ),
       body: Padding(
         padding: const EdgeInsets.only(
